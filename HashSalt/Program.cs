@@ -17,29 +17,29 @@ namespace HashSalt
         {
             Console.Write("Enter a password: ");
             string password = Console.ReadLine();
-            string hash = CreatePasswordHash(password);
-            Console.WriteLine("Hash value: " + hash);
+            string hash = CornedBeef(password);
+            Console.WriteLine("All hashed together: " + hash);
             Console.ReadKey();
         }
 
-        private static string CreatePasswordHash(string password)
+        private static string CornedBeef(string password)
         {
-            byte[] salt = GenerateRandomSalt();
+            byte[] salt = GenerateSalt();
             Console.WriteLine("Salt: " + Convert.ToBase64String(salt));
             Console.WriteLine("Iterations: " + IterationCount);
-            byte[] hashValue = GenerateHashValue(password, salt, IterationCount);
+            byte[] hashValue = GenerateHash(password, salt, IterationCount);
             return Convert.ToBase64String(hashValue);
         }
 
-        private static byte[] GenerateRandomSalt()
+        private static byte[] GenerateSalt()
         {
-            var csprng = new RNGCryptoServiceProvider(); // csprng = C# pseudo-random number generator
-            var salt = new byte[SaltByteLength]; // 24 bytes = 192 bits
+            var csprng = new RNGCryptoServiceProvider();
+            var salt = new byte[SaltByteLength]; // 24
             csprng.GetBytes(salt);
             return salt;
         }
 
-        private static byte[] GenerateHashValue(string password, byte[] salt, int iterationCount)
+        private static byte[] GenerateHash(string password, byte[] salt, int iterationCount)
         {
             byte[] hashValue;
             var valueToHash = string.IsNullOrEmpty(password) ? string.Empty : password;
